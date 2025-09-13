@@ -119,6 +119,7 @@ async function run() {
       const result = await userCollection.deleteOne(query);
       res.send(result);
     })
+    
 
     // menu related api
     app.get('/menu', async (req, res) => {
