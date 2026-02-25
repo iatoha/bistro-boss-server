@@ -127,6 +127,13 @@ async function run() {
 
 
     // menu related api
+
+    app.get("/menu", async (req, res) => {
+      const result = await menuCollection.find().toArray();
+      console.log("MENU DATA:", result);
+      res.send(result);
+    });
+
     app.get('/menu', async (req, res) => {
       const result = await menuCollection.find().toArray();
       res.send(result);
@@ -213,10 +220,10 @@ async function run() {
       })
     })
 
-    app.get('/payments/:email', verifyToken , async (req, res) => {
-      const  query = {email: req.params.email}
-      if(req.params.email !== req.decoded.email){
-        return res.status(403).send({message: 'forbidden access'});
+    app.get('/payments/:email', verifyToken, async (req, res) => {
+      const query = { email: req.params.email }
+      if (req.params.email !== req.decoded.email) {
+        return res.status(403).send({ message: 'forbidden access' });
       }
       const result = await paymentCollection.find(query).toArray();
       res.send(result);
@@ -260,7 +267,7 @@ async function run() {
         }
       ]).toArray();
 
-      const revenue = result.length > 0 ? result [0].totalRevenue : 0;
+      const revenue = result.length > 0 ? result[0].totalRevenue : 0;
 
       res.send({
         users,
@@ -292,8 +299,8 @@ async function run() {
         {
           $group: {
             _id: '$menuItems.category',
-            quantity: {$sum: 1 },
-            revenue: { $sum: '$menuItems.price'}
+            quantity: { $sum: 1 },
+            revenue: { $sum: '$menuItems.price' }
           },
         },
         {
@@ -304,7 +311,7 @@ async function run() {
             revenue: '$revenue'
           }
         }
-      ]).toArray(); 
+      ]).toArray();
       res.send(result);
     })
 
